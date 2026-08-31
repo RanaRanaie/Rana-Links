@@ -1,258 +1,31 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rana Ranaie</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root{
-    --navy: #131b26;
-    --navy-deep: #0d131c;
-    --ivory: #f4efe4;
-    --taupe: #b2a28c;
-    --gold: #c8a05a;
-    --gold-soft: rgba(200,160,90,0.35);
-    --hairline: rgba(200,160,90,0.22);
-  }
 
-  *{margin:0;padding:0;box-sizing:border-box;}
+RR
+HEALTHCARE · SALES · PSYCHOLOGY · INNOVATION
+رعنا رعنایی
+توسعه کسب‌وکار و فروش در حوزه سلامت
+Healthcare Business Development & Sales
 
-  html,body{height:100%;}
+فروش مشاوره‌ای · توسعه کسب‌وکار · CRM · تجربه بیمار · نوآوری در سلامت
 
-  body{
-    background:
-      radial-gradient(120% 90% at 50% -10%, #1c2635 0%, var(--navy) 45%, var(--navy-deep) 100%);
-    color: var(--ivory);
-    font-family: 'Jost', sans-serif;
-    min-height: 100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding: 48px 20px;
-    -webkit-font-smoothing: antialiased;
-  }
+WHATSAPP
+Direct Contact
 
-  .page{
-    width: 100%;
-    max-width: 420px;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    text-align:center;
-    opacity:0;
-    transform: translateY(10px);
-    animation: rise 1s ease forwards 0.15s;
-  }
+LINKEDIN
+Professional Profile
 
-  @keyframes rise{
-    to{ opacity:1; transform:translateY(0); }
-  }
+SAVE CONTACT
+ذخیره اطلاعات تماس
+اطلاعات حرفه‌ای
 
-  /* Emblem */
-  .emblem{
-    position:relative;
-    width:132px;
-    height:132px;
-    margin-bottom: 30px;
-  }
+حوزه‌های فعالیت
+Business Development · Consultative Sales · CRM · Patient Experience · Healthcare Innovation
+تحصیلات
+MBA — دانشگاه تهران
+روان‌شناسی — دانشگاه یادگار امام
+تجربه حرفه‌ای
+Taj Dental Clinic
+Healthcare Sales & Business Development
 
-  .emblem svg{
-    width:100%;
-    height:100%;
-    display:block;
-  }
-
-  .ring-outer{
-    animation: spin 60s linear infinite;
-    transform-origin: 66px 66px;
-  }
-  .ring-inner{
-    animation: spin 90s linear infinite reverse;
-    transform-origin: 66px 66px;
-  }
-
-  @keyframes spin{
-    to{ transform: rotate(360deg); }
-  }
-
-  .monogram{
-    position:absolute;
-    inset:0;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-family:'Cormorant Garamond', serif;
-    font-size: 34px;
-    font-weight:500;
-    letter-spacing: 2px;
-    color: var(--gold);
-  }
-
-  .eyebrow{
-    font-size: 11px;
-    letter-spacing: 3.5px;
-    text-transform: uppercase;
-    color: var(--taupe);
-    margin-bottom: 14px;
-  }
-
-  h1{
-    font-family:'Cormorant Garamond', serif;
-    font-weight: 500;
-    font-size: 42px;
-    letter-spacing: 1px;
-    color: var(--ivory);
-    margin-bottom: 10px;
-    direction: ltr;
-  }
-
-  .role{
-    font-size: 13px;
-    letter-spacing: 1.5px;
-    color: var(--gold);
-    text-transform: uppercase;
-    font-weight: 400;
-    margin-bottom: 4px;
-  }
-
-  .org{
-    font-size: 14px;
-    color: var(--taupe);
-    font-weight: 300;
-    margin-bottom: 28px;
-    direction: ltr;
-  }
-
-  .divider{
-    width: 56px;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 4px 0 26px;
-  }
-
-  .bio{
-    font-size: 15.5px;
-    line-height: 2;
-    color: rgba(244,239,228,0.82);
-    font-weight: 300;
-    margin-bottom: 34px;
-  }
-
-  .bio b{
-    color: var(--ivory);
-    font-weight: 500;
-  }
-
-  .links{
-    width: 100%;
-    display:flex;
-    flex-direction:column;
-    gap: 14px;
-    margin-bottom: 36px;
-  }
-
-  .link-btn{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap: 10px;
-    width:100%;
-    padding: 16px 20px;
-    border: 1px solid var(--gold-soft);
-    border-radius: 2px;
-    color: var(--ivory);
-    text-decoration:none;
-    font-size: 14px;
-    letter-spacing: 1.8px;
-    text-transform: uppercase;
-    font-weight: 400;
-    background: rgba(200,160,90,0.04);
-    transition: background 0.35s ease, border-color 0.35s ease, letter-spacing 0.35s ease;
-  }
-
-  .link-btn:hover{
-    background: rgba(200,160,90,0.14);
-    border-color: var(--gold);
-    letter-spacing: 2.2px;
-  }
-
-  .link-btn svg{
-    width: 16px;
-    height:16px;
-    flex-shrink:0;
-  }
-
-  footer{
-    font-size: 11.5px;
-    letter-spacing: 1.2px;
-    color: rgba(178,162,140,0.65);
-    line-height: 1.9;
-  }
-
-  footer .flourish{
-    color: var(--gold);
-    margin: 0 6px;
-  }
-
-  @media (prefers-reduced-motion: reduce){
-    .ring-outer, .ring-inner{ animation: none; }
-    .page{ animation: none; opacity:1; transform:none; }
-  }
-</style>
-</head>
-<body>
-
-<div class="page">
-
-  <div class="emblem">
-    <svg viewBox="0 0 132 132">
-      <g class="ring-outer">
-        <circle cx="66" cy="66" r="64" fill="none" stroke="rgba(200,160,90,0.45)" stroke-width="0.75"/>
-        <g stroke="rgba(200,160,90,0.55)" stroke-width="0.75">
-          <circle cx="66" cy="2" r="1.4" fill="rgba(200,160,90,0.7)" stroke="none"/>
-          <circle cx="66" cy="130" r="1.4" fill="rgba(200,160,90,0.7)" stroke="none"/>
-          <circle cx="2" cy="66" r="1.4" fill="rgba(200,160,90,0.7)" stroke="none"/>
-          <circle cx="130" cy="66" r="1.4" fill="rgba(200,160,90,0.7)" stroke="none"/>
-        </g>
-      </g>
-      <g class="ring-inner">
-        <circle cx="66" cy="66" r="52" fill="none" stroke="rgba(200,160,90,0.3)" stroke-width="0.6" stroke-dasharray="1.5 4"/>
-      </g>
-      <circle cx="66" cy="66" r="40" fill="none" stroke="rgba(200,160,90,0.5)" stroke-width="0.75"/>
-    </svg>
-    <div class="monogram">RR</div>
-  </div>
-
-  <div class="eyebrow">Personal&nbsp;Profile</div>
-  <h1>Rana Ranaie</h1>
-  <div class="role">Dental Treatment Consultant &amp; Sales Team Lead</div>
-  <div class="org">Taj Dental Clinic — Tehran</div>
-
-  <div class="divider"></div>
-
-  <p class="bio">
-    با نزدیک به <b>سه سال تجربه</b> در حوزه مشاوره درمان و فروش دندان‌پزشکی، در کنار تدریس و رهبری تیم فروش کلینیک تاج فعالیت می‌کنم.<br>
-    هم‌زمان دانشجوی <b>MBA دانشگاه تهران</b> و کارشناسی روان‌شناسی هستم.
-  </p>
-
-  <div class="links">
-    <a class="link-btn" href="https://wa.me/989981418481" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><path d="M17.6 6.3A8.6 8.6 0 0 0 3.9 16.5L3 21l4.6-1.2A8.6 8.6 0 1 0 17.6 6.3z"/><path d="M8.5 8.8c.3-.6.5-.6.8-.6h.5c.2 0 .4 0 .6.4.2.5.7 1.6.7 1.7.1.1.1.3 0 .5-.1.2-.1.3-.3.4-.1.2-.3.3-.4.5-.1.1-.3.3-.1.6.2.3.8 1.3 1.7 2.1 1.1 1 2.1 1.3 2.4 1.5.3.1.5.1.6-.1.2-.2.7-.8.9-1.1.2-.2.3-.2.6-.1.2.1 1.6.7 1.8.8.2.1.4.2.5.3 0 .2 0 .9-.3 1.5-.3.6-1.5 1.2-2.1 1.2-.6.1-1.1.2-3.6-.8-3-1.2-4.9-4.2-5-4.4-.1-.2-1.2-1.6-1.2-3 0-1.4.8-2.1 1-2.4z" fill="currentColor" stroke="none"/></svg>
-      WhatsApp
-    </a>
-    <a class="link-btn" href="https://www.linkedin.com/in/rana-ranaie/" target="_blank" rel="noopener">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3"><rect x="3.5" y="3.5" width="17" height="17" rx="1.5"/><line x1="7.5" y1="10" x2="7.5" y2="16.5"/><circle cx="7.5" cy="7" r="0.9" fill="currentColor" stroke="none"/><path d="M11.3 16.5v-4c0-1.5 1-2.5 2.3-2.5s2.1 1 2.1 2.5v4"/></svg>
-      LinkedIn
-    </a>
-  </div>
-
-  <footer>
-    Tehran, Iran <span class="flourish">✦</span> MBA Candidate, University of Tehran
-  </footer>
-
-</div>
-
-</body>
-</html>
+Let's Connect.
+برای ارتباط حرفه‌ای و همکاری خوشحال می‌شوم در ارتباط باشیم.
+Tehran, Iran ✦ MBA Candidate, University of Tehran
