@@ -1,0 +1,415 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>آزمون چرخش ذهنی و زمان پاسخ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f6f4f1; --card: #fff; --ink: #1f2a44; --muted: #6b7690; --line: #dcd7d0;
+    --accent: #c2410c; --accent-soft: #fdeee6; --ok: #15803d; --bad: #b91c1c;
+    /* رنگ‌های امن برای کوررنگی قرمز–سبز (آبی و نارنجی) */
+    --c0: #1b6ca8; --c1: #e8890c;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Vazirmatn", Tahoma, system-ui, sans-serif; background: var(--bg); color: var(--ink); line-height: 1.75; touch-action: manipulation; }
+  main { max-width: 640px; margin: 0 auto; padding: 20px 16px 48px; }
+  h1 { font-size: 1.5rem; margin: 8px 0 4px; font-weight: 800; }
+  h2 { font-size: 1.05rem; margin: 18px 0 6px; }
+  p.sub { color: var(--muted); margin: 0 0 18px; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  label.field { display: block; font-weight: 600; margin-bottom: 6px; }
+  input[type=text] { width: 100%; padding: 12px 14px; font: inherit; border: 1px solid var(--line); border-radius: 10px; background: #fff; color: var(--ink); }
+  input[type=text]:focus { outline: 2px solid var(--accent); outline-offset: 1px; }
+  ul.rules { padding-inline-start: 20px; color: var(--muted); margin: 8px 0; }
+  ul.rules li { margin-bottom: 4px; }
+  button { font: inherit; cursor: pointer; border-radius: 10px; border: 1px solid var(--line); background: #fff; color: var(--ink); padding: 10px 16px; }
+  button.primary { background: var(--accent); color: #fff; border-color: var(--accent); font-weight: 600; padding: 12px 22px; width: 100%; margin-top: 16px; }
+  button:disabled { opacity: .45; cursor: default; }
+
+  .modes { display: grid; gap: 10px; margin-top: 6px; }
+  .mode { display: flex; gap: 10px; align-items: flex-start; border: 2px solid var(--line); border-radius: 12px; padding: 12px 14px; cursor: pointer; background: #fff; }
+  .mode input { margin-top: 7px; accent-color: var(--accent); }
+  .mode b { display: block; }
+  .mode span { color: var(--muted); font-size: .9rem; }
+  .mode:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+
+  .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; color: var(--muted); }
+  .timer { font-variant-numeric: tabular-nums; font-weight: 600; color: var(--ink); }
+  .badge { background: var(--accent-soft); color: var(--accent); padding: 2px 10px; border-radius: 99px; font-size: .85rem; }
+
+  .cap { text-align: center; color: var(--muted); font-size: .9rem; margin: 0 0 6px; }
+  .target { display: flex; justify-content: center; margin-bottom: 14px; }
+  .target .frame { width: min(58vw, 230px); aspect-ratio: 1; border: 2px solid var(--ink); border-radius: 10px; background: #fff; padding: 6px; }
+  .frame svg, .opt svg { width: 100%; height: 100%; display: block; }
+  .options { direction: ltr; display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; max-width: 360px; margin: 0 auto; }
+  .opt { position: relative; aspect-ratio: 1; padding: 6px; border-radius: 12px; background: #fff; border: 2px solid var(--line); }
+  .opt .num { position: absolute; top: 6px; left: 8px; font-weight: 800; color: var(--muted); font-size: .95rem; }
+  .opt:disabled { opacity: 1; cursor: default; }
+  .opt:hover:not(:disabled) { border-color: var(--muted); }
+  .opt.sel { border-color: var(--accent); background: var(--accent-soft); box-shadow: 0 0 0 2px var(--accent) inset; }
+  .opt.right { border-color: var(--ok); background: #ecf8f0; box-shadow: 0 0 0 2px var(--ok) inset; }
+  .opt.wrongsel { border-color: var(--bad); background: #fdeeee; box-shadow: 0 0 0 2px var(--bad) inset; }
+  .opt .mark { position: absolute; top: 4px; right: 8px; font-size: 1.3rem; font-weight: 800; }
+  .opt.right .mark { color: var(--ok); } .opt.wrongsel .mark { color: var(--bad); }
+  .hint { text-align: center; color: var(--muted); font-size: .9rem; margin-top: 12px; min-height: 1.5em; }
+  .fb { margin-top: 14px; padding: 12px 14px; border-radius: 12px; background: var(--bg); }
+  .fb b.ok { color: var(--ok); } .fb b.bad { color: var(--bad); }
+
+  .stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin: 12px 0 18px; }
+  .stat { background: var(--bg); border-radius: 12px; padding: 12px; text-align: center; }
+  .stat b { display: block; font-size: 1.35rem; font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--muted); font-size: .82rem; line-height: 1.4; display: block; }
+  table { width: 100%; border-collapse: collapse; font-variant-numeric: tabular-nums; font-size: .92rem; }
+  th, td { padding: 7px 4px; text-align: center; border-bottom: 1px solid var(--line); }
+  th { color: var(--muted); font-weight: 600; font-size: .82rem; }
+  .ok { color: var(--ok); font-weight: 600; } .bad { color: var(--bad); font-weight: 600; } .half { color: #a16207; font-weight: 600; }
+  .flag { color: var(--bad); }
+  .row-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+  .row-actions button { flex: 1 1 auto; }
+  .note { color: var(--muted); font-size: .85rem; margin-top: 10px; }
+  .scroll { overflow-x: auto; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+
+  <!-- شروع -->
+  <section id="screen-start">
+    <h1>آزمون چرخش ذهنی</h1>
+    <p class="sub">سنجش توانایی فضایی همراه با ثبت دقیق زمان پاسخ هر سؤال</p>
+    <div class="card">
+      <label class="field" for="name">نام یا کد شرکت‌کننده</label>
+      <input id="name" type="text" autocomplete="off" placeholder="مثلاً: P01">
+
+      <h2>نسخه‌ی آزمون</h2>
+      <div class="modes">
+        <label class="mode"><input type="radio" name="mode" value="general" checked>
+          <div><b>نسخه‌ی عمومی — ۱۰ سؤال</b><span>برای شرکت‌کننده‌های عادی؛ سختی از آسان تا متوسط‌به‌بالا</span></div></label>
+        <label class="mode"><input type="radio" name="mode" value="specialised">
+          <div><b>نسخه‌ی تخصصی — ۲۰ سؤال</b><span>چهار سطح سختی تا شکل‌های بزرگ‌تر و چرخش‌های مایل؛ شامل ۱۰ سؤال نسخه‌ی عمومی</span></div></label>
+      </div>
+
+      <h2>راهنما</h2>
+      <ul class="rules">
+        <li>در هر سؤال یک <b>شکل مرجع</b> و چهار گزینه می‌بینید.</li>
+        <li><b>دو</b> گزینه همان شکل مرجع هستند که فقط چرخانده شده‌اند. شکل را نمی‌شود برگرداند یا آینه کرد.</li>
+        <li>دو گزینه‌ی دیگر یا <b>آینه‌ی</b> شکل مرجع هستند یا یکی از مربع‌هایشان جابه‌جا شده.</li>
+        <li>دقیقاً دو گزینه را انتخاب و «تأیید» را بزنید.</li>
+        <li>زمان از لحظه‌ی نمایش سؤال حساب می‌شود؛ سریع و دقیق جواب دهید و از صفحه خارج نشوید.</li>
+        <li>دو سؤال اول تمرین است و جواب درست را نشان می‌دهد.</li>
+      </ul>
+      <button class="primary" id="btn-start">شروع</button>
+    </div>
+  </section>
+
+  <!-- سؤال -->
+  <section id="screen-item" hidden>
+    <div class="topbar"><span id="q-label"></span><span class="timer" id="timer" hidden></span></div>
+    <div class="card">
+      <p class="cap">شکل مرجع</p>
+      <div class="target"><div class="frame" id="target"></div></div>
+      <p class="cap">دو گزینه‌ی چرخانده‌شده‌ی همین شکل را انتخاب کنید</p>
+      <div class="options" id="options"></div>
+      <div class="hint" id="hint"></div>
+      <div class="fb" id="feedback" hidden></div>
+      <button class="primary" id="btn-confirm" disabled>تأیید</button>
+    </div>
+  </section>
+
+  <!-- نتایج -->
+  <section id="screen-result" hidden>
+    <h1>نتایج</h1>
+    <p class="sub" id="who"></p>
+    <div class="card">
+      <div class="stats">
+        <div class="stat"><b id="s-full">-</b><span>سؤال کاملاً درست (هر دو گزینه)</span></div>
+        <div class="stat"><b id="s-partial">-</b><span>نمره‌ی جزئی (گزینه‌های درست از کل)</span></div>
+        <div class="stat"><b id="s-total">-</b><span>مجموع زمان (ثانیه)</span></div>
+        <div class="stat"><b id="s-mean">-</b><span>میانگین زمان هر سؤال (ثانیه)</span></div>
+        <div class="stat"><b id="s-mean-ok">-</b><span>میانگین زمان سؤال‌های کاملاً درست (ثانیه)</span></div>
+        <div class="stat"><b id="s-rcs">-</b><span>نرخ درست در دقیقه</span></div>
+        <div class="stat"><b id="s-ies">-</b><span>نمره‌ی کارایی معکوس (IES)؛ هرچه کمتر، بهتر</span></div>
+        <div class="stat"><b id="s-rapid">-</b><span>پاسخ‌های بسیار سریع (احتمال حدس)</span></div>
+      </div>
+
+      <h2>بر اساس سطح سختی</h2>
+      <table>
+        <thead><tr><th>سطح</th><th>تعداد</th><th>درست</th><th>میانگین زمان (ثانیه)</th></tr></thead>
+        <tbody id="tbody-level"></tbody>
+      </table>
+
+      <h2>تک‌تک سؤال‌ها</h2>
+      <div class="scroll">
+        <table>
+          <thead><tr><th>سؤال</th><th>سطح</th><th>نتیجه</th><th>زمان تأیید</th><th>اولین کلیک</th><th>نکته</th></tr></thead>
+          <tbody id="tbody"></tbody>
+        </table>
+      </div>
+
+      <div class="row-actions">
+        <button id="btn-csv">دانلود CSV این نفر</button>
+        <button id="btn-csv-all">دانلود CSV همه‌ی شرکت‌کننده‌ها</button>
+        <button id="btn-again">آزمون جدید</button>
+      </div>
+      <p class="note" id="saved-note"></p>
+      <p class="note">این آزمون یک مؤلفه‌ی توانایی فضایی (چرخش ذهنی) را می‌سنجد، نه هوش کلی. برای تفسیر نمره‌ها باید داده‌ی گروه مرجع جمع شود.</p>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ============================================================
+   بانک سؤال‌ها (ثابت و یکسان برای همه‌ی شرکت‌کننده‌ها)
+   با gen.js ساخته و با validate.js بررسی شده است.
+   ============================================================ */
+const ITEMS = /*__ITEMS__*/null;
+
+const RAPID_GUESS_S = 2.0;   // پاسخ زیر این زمان «بسیار سریع» علامت می‌خورد
+const SHOW_TIMER = false;    // true = نمایش زمان‌سنج زنده به شرکت‌کننده (پیش‌فرض مخفی)
+const STORE_KEY = 'mrt_results_v1';
+const LEVEL_NAMES = { 1: 'سطح ۱ (آسان)', 2: 'سطح ۲', 3: 'سطح ۳', 4: 'سطح ۴ (سخت)' };
+
+/* ---------- رسم شکل ---------- */
+function figMetrics(cells) {
+  const n = cells.length;
+  const cx = cells.reduce((s, c) => s + c[0] + 0.5, 0) / n;
+  const cy = cells.reduce((s, c) => s + c[1] + 0.5, 0) / n;
+  let R = 0;
+  for (const [x, y] of cells)
+    for (const [dx, dy] of [[0, 0], [1, 0], [0, 1], [1, 1]])
+      R = Math.max(R, Math.hypot(x + dx - cx, y + dy - cy));
+  return { cx, cy, R };
+}
+// یک شعاع مشترک برای همه‌ی شکل‌های یک سؤال تا اندازه‌ی مربع‌ها در همه‌ی گزینه‌ها برابر باشد
+function itemRadius(item) {
+  const all = [item.target, ...item.options.map(o => o.cells)];
+  return Math.max(...all.map(c => figMetrics(c).R)) + 0.35;
+}
+function figureSVG(cells, angle, R) {
+  const { cx, cy } = figMetrics(cells);
+  const rects = cells.map(([x, y, c]) =>
+    `<rect class="c${c}" x="${x}" y="${y}" width="1" height="1" fill="var(--c${c})" stroke="rgba(20,25,40,.6)" stroke-width="0.05" stroke-linejoin="round"/>`).join('');
+  return `<svg viewBox="${cx - R} ${cy - R} ${2 * R} ${2 * R}" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">` +
+         `<g transform="rotate(${angle} ${cx} ${cy})">${rects}</g></svg>`;
+}
+
+/* ---------- وضعیت ---------- */
+const $ = id => document.getElementById(id);
+const fa = (n, d = 2) => Number(n).toLocaleString('fa-IR', { minimumFractionDigits: d, maximumFractionDigits: d });
+const faInt = n => Number(n).toLocaleString('fa-IR');
+
+let mode = 'general', queue = [], qi = 0, results = [];
+let selected = [], t0 = null, tFirst = null, locked = true, leftTab = false, tickId = null;
+let participant = '', finishedAt = null, awaitingNext = false;
+
+function show(id) {
+  ['screen-start', 'screen-item', 'screen-result'].forEach(s => { $(s).hidden = (s !== id); });
+  window.scrollTo(0, 0);
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden && !locked) leftTab = true; });
+
+function buildQueue() {
+  const test = mode === 'general'
+    ? ITEMS.generalIds.map(id => ITEMS.bank.find(i => i.id === id))
+    : ITEMS.bank;
+  return [...ITEMS.practice.map(item => ({ item, practice: true })), ...test.map(item => ({ item, practice: false }))];
+}
+
+function startTest() {
+  participant = $('name').value.trim() || 'بدون‌نام';
+  mode = document.querySelector('input[name=mode]:checked').value;
+  queue = buildQueue(); qi = 0; results = [];
+  show('screen-item');
+  showItem();
+}
+
+function showItem() {
+  const { item, practice } = queue[qi];
+  const total = queue.filter(q => !q.practice).length;
+  const no = queue.slice(0, qi + 1).filter(q => !q.practice).length;
+  $('q-label').innerHTML = practice
+    ? `<span class="badge">تمرین ${faInt(qi + 1)} — ثبت نمی‌شود</span>`
+    : `سؤال ${faInt(no)} از ${faInt(total)}`;
+
+  const R = itemRadius(item);
+  $('target').innerHTML = figureSVG(item.target, 0, R);
+  $('options').innerHTML = item.options.map((o, i) =>
+    `<button class="opt" data-i="${i}" aria-label="گزینه ${i + 1}"><span class="num">${faInt(i + 1)}</span>${figureSVG(o.cells, o.angle, R)}</button>`).join('');
+
+  selected = []; tFirst = null; leftTab = false; awaitingNext = false;
+  $('feedback').hidden = true; $('hint').textContent = 'دو گزینه انتخاب کنید';
+  $('btn-confirm').textContent = 'تأیید'; $('btn-confirm').disabled = true;
+  locked = true; t0 = null;
+  clearInterval(tickId); $('timer').hidden = !SHOW_TIMER; $('timer').textContent = fa(0, 1);
+
+  // زمان‌سنج بعد از نقاشی‌شدن سؤال روی صفحه شروع می‌شود
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    t0 = performance.now(); locked = false;
+    if (SHOW_TIMER) tickId = setInterval(() => { $('timer').textContent = fa((performance.now() - t0) / 1000, 1); }, 100);
+  }));
+}
+
+$('options').addEventListener('click', e => {
+  const b = e.target.closest('.opt');
+  if (!b || locked || t0 === null) return;
+  const i = Number(b.dataset.i);
+  if (tFirst === null) tFirst = (performance.now() - t0) / 1000;
+  const at = selected.indexOf(i);
+  if (at >= 0) selected.splice(at, 1);
+  else { selected.push(i); if (selected.length > 2) selected.shift(); }
+  document.querySelectorAll('.opt').forEach((el, k) => el.classList.toggle('sel', selected.includes(k)));
+  $('btn-confirm').disabled = selected.length !== 2;
+  $('hint').textContent = selected.length === 2 ? '' : 'دو گزینه انتخاب کنید';
+});
+
+$('btn-confirm').addEventListener('click', () => {
+  if (awaitingNext) { nextItem(); return; }
+  if (locked || selected.length !== 2 || t0 === null) return;
+  locked = true;
+  const rt = (performance.now() - t0) / 1000;
+  clearInterval(tickId);
+  const { item, practice } = queue[qi];
+  const picks = selected.slice().sort();
+  const nCorrect = picks.filter(i => item.options[i].correct).length;
+
+  if (practice) { showFeedback(item, picks, nCorrect); return; }
+
+  results.push({
+    id: item.id, level: item.level, nCells: item.nCells,
+    selected: picks.map(i => i + 1), correct: item.correct.map(i => i + 1),
+    nCorrect, full: nCorrect === 2,
+    rt: Math.round(rt * 1000) / 1000,
+    rtFirst: Math.round(tFirst * 1000) / 1000,
+    leftTab, rapid: rt < RAPID_GUESS_S,
+    disparities: item.options.filter(o => o.correct).map(o => Math.round(o.disparity)),
+    distractors: item.distractorTypes.join('+'),
+  });
+  $('btn-confirm').disabled = true;
+  setTimeout(nextItem, 250);
+});
+
+function showFeedback(item, picks, nCorrect) {
+  document.querySelectorAll('.opt').forEach((el, i) => {
+    el.disabled = true; el.classList.remove('sel');
+    const correct = item.options[i].correct;
+    if (correct) { el.classList.add('right'); el.insertAdjacentHTML('beforeend', '<span class="mark">✓</span>'); }
+    else if (picks.includes(i)) { el.classList.add('wrongsel'); el.insertAdjacentHTML('beforeend', '<span class="mark">✗</span>'); }
+  });
+  const kinds = item.options.filter(o => !o.correct).map(o => o.kind);
+  const why = kinds.includes('mirror')
+    ? 'گزینه‌های اشتباه آینه‌ی شکل مرجع‌اند؛ با چرخاندن هرگز به آن نمی‌رسند.'
+    : '';
+  const why2 = kinds.includes('shift') ? 'یکی از مربع‌ها در گزینه‌های اشتباه جابه‌جا شده.' : '';
+  const head = nCorrect === 2 ? '<b class="ok">درست بود.</b>' : '<b class="bad">این بار درست نبود.</b>';
+  $('feedback').innerHTML = `${head} دو گزینه‌ی علامت‌خورده همان شکل مرجع‌اند که چرخانده شده. ${why} ${why2}`;
+  $('feedback').hidden = false;
+  $('hint').textContent = '';
+  awaitingNext = true;
+  $('btn-confirm').disabled = false;
+  $('btn-confirm').textContent = qi + 1 < queue.length && queue[qi + 1].practice ? 'تمرین بعدی' : 'شروع آزمون اصلی';
+}
+
+function nextItem() {
+  qi++;
+  if (qi < queue.length) showItem(); else finish();
+}
+
+/* ============================================================
+   نتایج، ذخیره و CSV
+   ============================================================ */
+const mean = a => a.reduce((s, x) => s + x, 0) / a.length;
+
+function summarize(res) {
+  const n = res.length;
+  const full = res.filter(r => r.full);
+  const total = res.reduce((s, r) => s + r.rt, 0);
+  const meanRT = total / n;
+  const meanRTok = full.length ? mean(full.map(r => r.rt)) : null;
+  const acc = full.length / n;
+  return {
+    n, full: full.length,
+    partial: res.reduce((s, r) => s + r.nCorrect, 0),
+    total, meanRT, meanRTok,
+    rcs: total > 0 ? full.length / (total / 60) : 0,
+    ies: full.length ? meanRTok / acc : null,
+    rapid: res.filter(r => r.rapid).length,
+  };
+}
+
+function finish() {
+  finishedAt = new Date();
+  const s = summarize(results);
+  $('who').textContent = `شرکت‌کننده: ${participant} — ${mode === 'general' ? 'نسخه‌ی عمومی' : 'نسخه‌ی تخصصی'}`;
+  $('s-full').textContent = `${faInt(s.full)} از ${faInt(s.n)}`;
+  $('s-partial').textContent = `${faInt(s.partial)} از ${faInt(2 * s.n)}`;
+  $('s-total').textContent = fa(s.total);
+  $('s-mean').textContent = fa(s.meanRT);
+  $('s-mean-ok').textContent = s.meanRTok === null ? '—' : fa(s.meanRTok);
+  $('s-rcs').textContent = fa(s.rcs);
+  $('s-ies').textContent = s.ies === null ? '—' : fa(s.ies);
+  $('s-rapid').textContent = faInt(s.rapid);
+
+  const levels = [...new Set(results.map(r => r.level))].sort();
+  $('tbody-level').innerHTML = levels.map(lv => {
+    const rs = results.filter(r => r.level === lv);
+    return `<tr><td>${LEVEL_NAMES[lv]}</td><td>${faInt(rs.length)}</td><td>${faInt(rs.filter(r => r.full).length)}</td><td>${fa(mean(rs.map(r => r.rt)))}</td></tr>`;
+  }).join('');
+
+  $('tbody').innerHTML = results.map((r, i) => {
+    const cls = r.full ? 'ok' : r.nCorrect === 1 ? 'half' : 'bad';
+    const txt = r.full ? 'درست' : r.nCorrect === 1 ? 'نیمه‌درست' : 'غلط';
+    const notes = [r.rapid ? 'خیلی سریع' : '', r.leftTab ? 'ترک صفحه' : ''].filter(Boolean).join('، ');
+    return `<tr><td>${faInt(i + 1)}</td><td>${faInt(r.level)}</td><td class="${cls}">${txt}</td><td>${fa(r.rt)}</td><td>${fa(r.rtFirst)}</td><td class="flag">${notes || '—'}</td></tr>`;
+  }).join('');
+
+  let saved = false;
+  try {
+    const all = JSON.parse(localStorage.getItem(STORE_KEY) || '[]');
+    all.push({ participant, mode, finishedAt: finishedAt.toISOString(), results });
+    localStorage.setItem(STORE_KEY, JSON.stringify(all));
+    saved = true;
+  } catch (e) { /* ذخیره‌سازی در دسترس نیست */ }
+  $('saved-note').textContent = saved
+    ? 'نتیجه در همین مرورگر ذخیره شد. برای نگه‌داشتن دائمی، CSV را دانلود کنید.'
+    : 'ذخیره‌سازی مرورگر در دسترس نیست؛ حتماً CSV را دانلود کنید.';
+  show('screen-result');
+}
+
+function toCSV(sessions) {
+  const esc = v => `"${String(v).replace(/"/g, '""')}"`;
+  const header = ['participant', 'mode', 'finished_at', 'item_id', 'level', 'n_cells', 'selected', 'correct_options',
+    'correct_picks', 'full_correct', 'rt_confirm_s', 'rt_first_click_s', 'left_tab', 'rapid_guess',
+    'correct_option_angle_disparity', 'distractor_types'];
+  const rows = [header.map(esc).join(',')];
+  sessions.forEach(s => s.results.forEach(r => rows.push([
+    s.participant, s.mode, s.finishedAt, r.id, r.level, r.nCells, r.selected.join(';'), r.correct.join(';'),
+    r.nCorrect, r.full ? 1 : 0, r.rt.toFixed(3), r.rtFirst.toFixed(3), r.leftTab ? 1 : 0, r.rapid ? 1 : 0,
+    r.disparities.join(';'), r.distractors,
+  ].map(esc).join(','))));
+  return '﻿' + rows.join('\r\n');   // BOM تا اکسل فارسی را درست باز کند
+}
+function download(name, text) {
+  const url = URL.createObjectURL(new Blob([text], { type: 'text/csv;charset=utf-8' }));
+  const a = document.createElement('a'); a.href = url; a.download = name;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+}
+$('btn-csv').addEventListener('click', () =>
+  download(`mrt-${participant}.csv`, toCSV([{ participant, mode, finishedAt: finishedAt.toISOString(), results }])));
+$('btn-csv-all').addEventListener('click', () => {
+  let all = [];
+  try { all = JSON.parse(localStorage.getItem(STORE_KEY) || '[]'); } catch (e) {}
+  if (!all.length) all = [{ participant, mode, finishedAt: finishedAt.toISOString(), results }];
+  download('mrt-all-participants.csv', toCSV(all));
+});
+$('btn-again').addEventListener('click', () => { $('name').value = ''; show('screen-start'); });
+$('btn-start').addEventListener('click', startTest);
+$('name').addEventListener('keydown', e => { if (e.key === 'Enter') startTest(); });
+</script>
+</body>
+</html>
